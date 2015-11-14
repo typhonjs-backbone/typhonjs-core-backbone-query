@@ -1,0 +1,19 @@
+{
+   "entryPoints":
+   [
+      {
+         "inMemoryBuild": true,
+         "formats": ["amd"],
+         "mangle": false,
+         "minify": false,
+         "src": "src/BackboneQuery.js - [underscore]",
+         "extraConfig":
+         {
+            "meta":
+            {
+               "underscore": { "build": false }
+            }
+         }
+      }
+   ]
+}

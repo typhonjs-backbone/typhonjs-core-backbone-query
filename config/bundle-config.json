@@ -1,0 +1,36 @@
+{
+   "entryPoints":
+   [
+      {
+         "destBaseDir": "./dist",
+         "destFilename": "typhonjs-core-backbone-query.js",
+         "formats": ["amd", "cjs"],
+         "mangle": false,
+         "minify": false,
+         "src": "src/BackboneQuery.js - [underscore]",
+         "extraConfig":
+         {
+            "meta":
+            {
+               "underscore": { "build": false }
+            }
+         }
+      },
+
+      {
+         "destBaseDir": "./dist",
+         "destFilename": "typhonjs-core-backbone-query.min.js",
+         "formats": ["amd", "cjs"],
+         "mangle": true,
+         "minify": true,
+         "src": "src/BackboneQuery.js - [underscore]",
+         "extraConfig":
+         {
+            "meta":
+            {
+               "underscore": { "build": false }
+            }
+         }
+      }
+   ]
+}
