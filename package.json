@@ -19,7 +19,11 @@
       "core-js": "npm:core-js@^1.2.1"
     },
     "files": [
-      "src/"
+      "src/",
+      "esdoc.json",
+      "package.json",
+      "CHANGELOG.md",
+      "README.md"
     ],
   },
   "devDependencies": {
