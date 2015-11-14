@@ -24,7 +24,7 @@
       "package.json",
       "CHANGELOG.md",
       "README.md"
-    ],
+    ]
   },
   "devDependencies": {
     "gulp": "^3.9.0",
