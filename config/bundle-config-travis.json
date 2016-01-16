@@ -3,10 +3,10 @@
    [
       {
          "inMemoryBuild": true,
-         "formats": ["amd"],
+         "formats": ["umd"],
          "mangle": false,
          "minify": false,
-         "src": "src/BackboneQuery.js - [underscore]",
+         "src": "src/BackboneQuery.js",
          "extraConfig":
          {
             "meta":

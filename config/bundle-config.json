@@ -4,10 +4,10 @@
       {
          "destBaseDir": "./dist",
          "destFilename": "typhonjs-core-backbone-query.js",
-         "formats": ["amd", "cjs"],
+         "formats": ["amd", "cjs", "umd"],
          "mangle": false,
          "minify": false,
-         "src": "src/BackboneQuery.js - [underscore]",
+         "src": "src/BackboneQuery.js",
          "extraConfig":
          {
             "meta":
@@ -20,10 +20,10 @@
       {
          "destBaseDir": "./dist",
          "destFilename": "typhonjs-core-backbone-query.min.js",
-         "formats": ["amd", "cjs"],
+         "formats": ["amd", "cjs", "umd"],
          "mangle": true,
          "minify": true,
-         "src": "src/BackboneQuery.js - [underscore]",
+         "src": "src/BackboneQuery.js",
          "extraConfig":
          {
             "meta":
