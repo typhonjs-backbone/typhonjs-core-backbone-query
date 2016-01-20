@@ -3,7 +3,7 @@
    [
       {
          "inMemoryBuild": true,
-         "formats": ["umd"],
+         "formats": ["amd"],
          "mangle": false,
          "minify": false,
          "src": "src/BackboneQuery.js",
