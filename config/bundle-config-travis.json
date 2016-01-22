@@ -2,11 +2,16 @@
    "entryPoints":
    [
       {
-         "inMemoryBuild": true,
-         "formats": ["cjs"],
+         "destBaseDir": "./dist",
+         "destFilename": "typhonjs-core-backbone-query.js",
+         "formats": ["umd"],
          "mangle": false,
          "minify": false,
          "src": "src/BackboneQuery.js",
+         "builderOptions":
+         {
+            "globalDeps": { "underscore": "_" }
+         },
          "extraConfig":
          {
             "meta":

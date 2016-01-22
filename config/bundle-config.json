@@ -8,6 +8,10 @@
          "mangle": false,
          "minify": false,
          "src": "src/BackboneQuery.js",
+         "builderOptions":
+         {
+            "globalDeps": { "underscore": "_" }
+         },
          "extraConfig":
          {
             "meta":
@@ -24,6 +28,10 @@
          "mangle": true,
          "minify": true,
          "src": "src/BackboneQuery.js",
+         "builderOptions":
+         {
+            "globalDeps": { "underscore": "_" }
+         },
          "extraConfig":
          {
             "meta":
