@@ -641,15 +641,12 @@ const __indexOf = [].indexOf || function(item)
  */
 const s_DETECT = function(array, test)
 {
-   let _i, _len, val;
+   let _i, _len;
 
    for (_i = 0, _len = array.length; _i < _len; _i++)
    {
-      val = array[_i];
-      if (test(val))
-      {
-         return true;
-      }
+      const val = array[_i];
+      if (test(val)) { return true; }
    }
 
    return false;
@@ -665,15 +662,12 @@ const s_DETECT = function(array, test)
 const s_FILTER = function(array, test)
 {
    const _results = [];
-   let _i, _len, val;
+   let _i, _len;
 
    for (_i = 0, _len = array.length; _i < _len; _i++)
    {
-      val = array[_i];
-      if (test(val))
-      {
-         _results.push(val);
-      }
+      const val = array[_i];
+      if (test(val)) { _results.push(val); }
    }
 
    return _results;
@@ -689,9 +683,10 @@ const s_FILTER = function(array, test)
  */
 const s_GET_CACHE = function(collection, query, options)
 {
-   let _ref, cache, models, queryString;
-   queryString = JSON.stringify(query);
-   cache = (_ref = collection._queryCache) !== null ? _ref : collection._queryCache = {};
+   let models;
+   const _ref = collection._queryCache;
+   const queryString = JSON.stringify(query);
+   const cache = _ref !== null ? _ref : collection._queryCache = {};
    models = cache[queryString];
 
    if (!models)
@@ -793,20 +788,23 @@ const s_ITERATOR = function(models, query, andOr, filterFunction, itemType)
 
    return filterFunction(models, (model) =>
    {
-      let _i, _len, attr, q, test;
+      let _i, _len, test;
 
       for (_i = 0, _len = query.length; _i < _len; _i++)
       {
-         q = query[_i];
+         const q = query[_i];
 
-         attr = (function()
+         const attr = (function()
          {
             switch (itemType)
             {
                case 'elemMatch':
                   return model[q.key];
+
                case 'computed':
+
                   return model[q.key]();
+
                default:
                   return model.get(q.key);
             }
@@ -833,15 +831,15 @@ const s_ITERATOR = function(models, query, andOr, filterFunction, itemType)
  */
 const s_MAKE_OBJ = function()
 {
-   let args, current, key, o, val;
-   args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-   o = {};
+   let current;
+   const args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+   const o = {};
    current = o;
 
    while (args.length)
    {
-      key = args.shift();
-      val = (args.length === 1 ? args.shift() : {});
+      const key = args.shift();
+      const val = (args.length === 1 ? args.shift() : {});
       current = current[key] = val;
    }
 
@@ -857,7 +855,7 @@ const s_MAKE_OBJ = function()
  */
 const s_PAGE_MODELS = function(models, options)
 {
-   let end, sliced_models, start, total_pages;
+   let start;
 
    if (options.offset)
    {
@@ -872,12 +870,12 @@ const s_PAGE_MODELS = function(models, options)
       start = 0;
    }
 
-   end = start + options.limit;
-   sliced_models = models.slice(start, end);
+   const end = start + options.limit;
+   const sliced_models = models.slice(start, end);
 
    if (options.pager && _.isFunction(options.pager))
    {
-      total_pages = Math.ceil(models.length / options.limit);
+      const total_pages = Math.ceil(models.length / options.limit);
       options.pager(total_pages, sliced_models);
    }
 
@@ -898,11 +896,11 @@ const s_PAGE_MODELS = function(models, options)
  * ]
  *
  * @param {*}  rawQuery - raw query
- * @return {array} parsed query
+ * @return {Array} parsed query
  */
 const s_PARSE_SUB_QUERY = function(rawQuery)
 {
-   let _i, _len, _results, key, o, paramType, q, query, queryArray, queryParam, type, val, value;
+   let _i, _len, key, o, queryArray;
 
    if (_.isArray(rawQuery))
    {
@@ -912,31 +910,32 @@ const s_PARSE_SUB_QUERY = function(rawQuery)
    {
       queryArray = (function()
       {
-         let _results;
-         _results = [];
+         const _results = [];
+
          for (key in rawQuery)
          {
             if (!__hasProp.call(rawQuery, key)) { continue; }
-            val = rawQuery[key];
+            const val = rawQuery[key];
             _results.push(s_MAKE_OBJ(key, val));
          }
          return _results;
       })();
    }
 
-   _results = [];
+   const _results = [];
 
    for (_i = 0, _len = queryArray.length; _i < _len; _i++)
    {
-      query = queryArray[_i];
+      const query = queryArray[_i];
+
       for (key in query)
       {
          if (!__hasProp.call(query, key)) { continue; }
 
-         queryParam = query[key];
+         const queryParam = query[key];
          o = { key };
 
-         paramType = s_GET_TYPE(queryParam);
+         const paramType = s_GET_TYPE(queryParam);
          switch (paramType)
          {
             case '$regex':
@@ -953,22 +952,27 @@ const s_PARSE_SUB_QUERY = function(rawQuery)
                }
                else
                {
-                  for (type in queryParam)
+                  for (const type in queryParam)
                   {
-                     value = queryParam[type];
+                     const value = queryParam[type];
                      if (s_TEST_QUERY_VALUE(type, value))
                      {
+                        const test = type;
                         o.type = type;
-                        switch (type)
+                        switch (test)
                         {
                            case '$elemMatch':
                            case '$relationMatch':
                               o.value = s_PARSE_QUERY(value);
                               break;
+
                            case '$computed':
-                              q = s_MAKE_OBJ(key, value);
+                           {
+                              const q = s_MAKE_OBJ(key, value);
                               o.value = s_PARSE_SUB_QUERY(q);
                               break;
+                           }
+
                            default:
                               o.value = value;
                         }
@@ -1000,19 +1004,14 @@ const s_PARSE_SUB_QUERY = function(rawQuery)
  */
 const s_PARSE_QUERY = function(query)
 {
-   let compoundKeys, compoundQuery, key, queryKeys, type, val;
-   queryKeys = _(query).keys();
-   compoundKeys = ["$and", "$not", "$or", "$nor"];
-   compoundQuery = _.intersection(compoundKeys, queryKeys);
+   let key;
+   const queryKeys = _(query).keys();
+   const compoundKeys = ["$and", "$not", "$or", "$nor"];
+   const compoundQuery = _.intersection(compoundKeys, queryKeys);
 
    if (compoundQuery.length === 0)
    {
-      return [
-         {
-            type: "$and",
-            parsedQuery: s_PARSE_SUB_QUERY(query)
-         }
-      ];
+      return [{ type: "$and", parsedQuery: s_PARSE_SUB_QUERY(query) }];
    }
    else
    {
@@ -1026,7 +1025,7 @@ const s_PARSE_QUERY = function(query)
          for (key in query)
          {
             if (!__hasProp.call(query, key)) { continue; }
-            val = query[key];
+            const val = query[key];
 
             if (!(__indexOf.call(compoundKeys, key) < 0)) { continue; }
 
@@ -1037,16 +1036,13 @@ const s_PARSE_QUERY = function(query)
 
       return (function()
       {
-         let _i, _len, _results;
-         _results = [];
+         let _i, _len;
+         const _results = [];
 
          for (_i = 0, _len = compoundQuery.length; _i < _len; _i++)
          {
-            type = compoundQuery[_i];
-            _results.push({
-               type,
-               parsedQuery: s_PARSE_SUB_QUERY(query[type])
-            });
+            const type = compoundQuery[_i];
+            _results.push({ type, parsedQuery: s_PARSE_SUB_QUERY(query[type]) });
          }
          return _results;
       })();
@@ -1067,69 +1063,79 @@ const s_PERFORM_QUERY = function(type, value, attr, model)
    switch (type)
    {
       case '$equal':
-         if (_(attr).isArray())
-         {
-            return __indexOf.call(attr, value) >= 0;
-         }
-         else
-         {
-            return attr === value;
-         }
-         break;
+         if (_(attr).isArray()) { return __indexOf.call(attr, value) >= 0; }
+         else { return attr === value; }
+
       case '$oEqual':
          return _(attr).isEqual(value);
+
       case '$contains':
          return __indexOf.call(attr, value) >= 0;
+
       case '$ne':
          return attr !== value;
+
       case '$lt':
          return attr < value;
+
       case '$gt':
          return attr > value;
+
       case '$lte':
          return attr <= value;
+
       case '$gte':
          return attr >= value;
+
       case '$between':
          return (value[0] < attr && attr < value[1]);
+
       case '$in':
          return __indexOf.call(value, attr) >= 0;
+
       case '$nin':
          return __indexOf.call(value, attr) < 0;
+
       case '$all':
-         return _(value).all((item) =>
-         {
-            return __indexOf.call(attr, item) >= 0;
-         });
+         return _(value).all((item) => { return __indexOf.call(attr, item) >= 0; });
+
       case '$any':
-         return _(attr).any((item) =>
-         {
-            return __indexOf.call(value, item) >= 0;
-         });
+         return _(attr).any((item) => { return __indexOf.call(value, item) >= 0; });
+
       case '$size':
          return attr.length === value;
+
       case '$exists':
       case '$has':
          return (attr !== null) === value;
+
       case '$like':
          return attr.includes(value);
+
       case '$likeI':
          return attr.toLowerCase().includes(value.toLowerCase());
+
       case '$regex':
          return value.test(attr);
+
       case '$cb':
          return value.call(model, attr);
+
       case '$elemMatch':
          return (s_RUN_QUERY(attr, value, 'elemMatch')).length > 0;
+
       case '$relationMatch':
          return (s_RUN_QUERY(attr.models, value, 'relationMatch')).length > 0;
+
       case '$computed':
          return s_ITERATOR([model], value, false, s_DETECT, 'computed');
+
       case '$and':
       case '$or':
       case '$nor':
       case '$not':
          return (s_PROCESS_QUERY[type]([model], value)).length === 1;
+
       default:
          return false;
    }
@@ -1168,15 +1174,13 @@ const s_PROCESS_QUERY =
 const s_REJECT = function(array, test)
 {
    const _results = [];
-   let _i, _len, val;
+   let _i, _len;
 
    for (_i = 0, _len = array.length; _i < _len; _i++)
    {
-      val = array[_i];
-      if (!test(val))
-      {
-         _results.push(val);
-      }
+      const val = array[_i];
+
+      if (!test(val)) { _results.push(val); }
    }
 
    return _results;
@@ -1192,14 +1196,12 @@ const s_REJECT = function(array, test)
  */
 const s_RUN_QUERY = function(items, query, itemType)
 {
-   let reduceIterator;
-
    if (!itemType)
    {
       query = s_PARSE_QUERY(query);
    }
 
-   reduceIterator = function(memo, queryItem)
+   const reduceIterator = function(memo, queryItem)
    {
       return s_PROCESS_QUERY[queryItem.type](memo, queryItem.parsedQuery, itemType);
    };
@@ -1303,17 +1305,23 @@ const s_TEST_QUERY_VALUE = function(type, value)
       case '$all':
       case '$any':
          return _(value).isArray();
+
       case '$size':
          return _(value).isNumber();
+
       case '$regex':
          return _(value).isRegExp();
+
       case '$like':
       case '$likeI':
          return _(value).isString();
+
       case '$between':
          return _(value).isArray() && (value.length === 2);
+
       case '$cb':
          return _(value).isFunction();
+
       default:
          return true;
    }
